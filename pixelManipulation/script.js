@@ -17,4 +17,18 @@ image1.addEventListener('load', function(){
     const scannedImage = ctx.getImageData(0,0, canvas.width, canvas.height);
     //console.log(scannedImage);
     //Note: when looking at the console 4 numbers in the array represent rbga numbers (red, blue, green, alpha/opacity)
+    //to turn image into grays-scale, we need to loop through the image data!
+    const scannedData = scannedImage.data;
+    //loop through scanned data by 4 (as noted above, every 4 is a series describing 1pixel)
+    for(let i = 0; i < scannedData.length; i==4){
+        const total = scannedData[i] = scannedData[i+1] + scannedData[i+2];
+        const averageColorValue =total/3;
+        //now must reassign pixels as the averageColorValue to turn into grey scale
+        scannedData[i] = averageColorValue;
+        scannedData[i + 1] = averageColorValue;
+        scannedData[i + 2] = averageColorValue;
+    }
+    //sets originally scanned image data. as the altered scanned data.
+    scannedImage.data = scannedData;
+    ctx.putImageData(scannedImage, 0, 0);
 });
